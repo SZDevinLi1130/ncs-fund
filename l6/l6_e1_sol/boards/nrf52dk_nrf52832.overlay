@@ -3,8 +3,12 @@
 
 &i2c0 {
     status = "okay";
+    
+    // We need to use TWIM due to TWI driver issues in nRF Connect SDK v3.2.0 (the issue will be fixed in v3.3.0)
+    compatible = "nordic,nrf-twim";
+
     pinctrl-0 = <&i2c0_default>;
-	pinctrl-1 = <&i2c0_sleep>;
+    pinctrl-1 = <&i2c0_sleep>;
     pinctrl-names = "default", "sleep";
     mysensor: mysensor@77{
         compatible = "i2c-device";
@@ -14,18 +18,18 @@
 };
 
 &pinctrl {
-	/omit-if-no-ref/ i2c0_default: i2c0_default {
-		group1  {
-			psels = <NRF_PSEL(TWIM_SCL, 0, 24)>,
-					<NRF_PSEL(TWIM_SDA, 0, 25)>;
-		};
-	};
+    /omit-if-no-ref/ i2c0_default: i2c0_default {
+        group1  {
+            psels = <NRF_PSEL(TWIM_SCL, 0, 24)>,
+                    <NRF_PSEL(TWIM_SDA, 0, 25)>;
+        };
+    };
 
-	/omit-if-no-ref/ i2c0_sleep: i2c0_sleep {
-		group1  {
-			psels = <NRF_PSEL(TWIM_SCL, 0, 24)>,
-					<NRF_PSEL(TWIM_SDA, 0, 25)>;
-			low-power-enable;
-		};
-	};
+    /omit-if-no-ref/ i2c0_sleep: i2c0_sleep {
+        group1  {
+            psels = <NRF_PSEL(TWIM_SCL, 0, 24)>,
+                    <NRF_PSEL(TWIM_SDA, 0, 25)>;
+            low-power-enable;
+        };
+    };
 };
