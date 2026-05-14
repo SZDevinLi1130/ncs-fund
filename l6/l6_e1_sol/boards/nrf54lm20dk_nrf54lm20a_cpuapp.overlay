@@ -3,9 +3,11 @@
 
 &i2c21 {
     status = "okay";
+	/delete-property/ clock-tolerance-percent;
     pinctrl-0 = <&i2c21_default>;
 	pinctrl-1 = <&i2c21_sleep>;
     pinctrl-names = "default", "sleep";
+	clock-frequency = <I2C_BITRATE_FAST_PLUS>; /* 400 kbps, you can change to STANDARD (100k) or FAST_PLUS (1M) */
     mysensor: mysensor@77{
         compatible = "i2c-device";
         status = "okay";
@@ -16,14 +18,17 @@
 &pinctrl {
 	/omit-if-no-ref/ i2c21_default: i2c21_default {
 		group1 {
-			psels = <NRF_PSEL(TWIM_SCL, 1, 11)>,
-				    <NRF_PSEL(TWIM_SDA, 1, 12)>;
+			psels = <NRF_PSEL(TWIM_SCL, 1, 13)>,
+				    <NRF_PSEL(TWIM_SDA, 1, 14)>;
 		};
+		nordic,drive-mode = <NRF_DRIVE_H0D1>;
+		bias-pull-up;
 	};
     /omit-if-no-ref/ i2c21_sleep: i2c21_sleep {
 		group1 {
-			psels = <NRF_PSEL(TWIM_SCL, 1, 11)>,
-				    <NRF_PSEL(TWIM_SDA, 1, 12)>;
+			psels = <NRF_PSEL(TWIM_SCL, 1, 13)>,
+				    <NRF_PSEL(TWIM_SDA, 1, 14)>;
 		};
+		low-power-enable;
 	};
 };
